@@ -28,7 +28,84 @@ AI-Powered Analysis: The enriched data is then sent to a Generative AI model. Th
 
 Dynamic Vulnerability Display: All processed vulnerabilities are displayed as informative cards, color-coded by severity, and sorted with the most critical items first.
 
-3. Technical Architecture & Tech Stack
+3. Running The Project Locally
+To run this application on your own desktop, you'll need to set up a local React development environment and create your own backend on Firebase.
+
+⚙️ Step 1: Prerequisites
+Node.js: Ensure you have Node.js v18.0 or higher. You can download it from nodejs.org.
+
+Code Editor: A modern code editor like Visual Studio Code is recommended.
+
+🔥 Step 2: Set Up Your Firebase Backend
+Create a Firebase Project: Go to the Firebase Console and create a new project.
+
+Enable Authentication: In the console, navigate to Build > Authentication. Click "Get started" and on the "Sign-in method" tab, enable the Anonymous provider.
+
+Enable Firestore: Navigate to Build > Firestore Database. Click "Create database," start in test mode for development, and choose a cloud location.
+
+Get Credentials: In your Project Overview, click the web icon (</>) to create a new Web App. Register the app and Firebase will provide you with a firebaseConfig object. Copy this object for Step 4.
+
+💻 Step 3: Set Up The Local React Project
+Clone or Download the Code: Get the project code onto your local machine.
+
+Navigate to the Project Directory:
+
+cd path/to/your/project
+
+Install Dependencies:
+
+npm install
+
+This will install React, Firebase, Tailwind CSS, and all other necessary libraries.
+
+🔌 Step 4: Configure Your Environment
+Create an Environment File: In the root of your project, create a new file named .env.
+
+Add Firebase Credentials: Paste your firebaseConfig details into .env with the VITE_ prefix for each key. Vite requires this prefix for environment variables.
+
+VITE_FIREBASE_API_KEY="AIzaSy..."
+VITE_FIREBASE_AUTH_DOMAIN="your-project.firebaseapp.com"
+VITE_FIREBASE_PROJECT_ID="your-project-id"
+VITE_FIREBASE_STORAGE_BUCKET="your-project.appspot.com"
+VITE_FIREBASE_MESSAGING_SENDER_ID="1234567890"
+VITE_FIREBASE_APP_ID="1:12345:web:abcdef12345"
+
+Update the Code to Use Env Variables: In the main application file (e.g., App.jsx), replace the hardcoded firebaseConfig object with one that reads from your .env file.
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
+
+Adjust Authentication: The application's original code may look for a special token from its development environment. Find the useEffect hook responsible for authentication and ensure it only uses signInAnonymously for local development.
+
+useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+            setUserId(currentUser.uid);
+        } else {
+            // Sign in anonymously if no user is found
+            signInAnonymously(auth).catch(error => {
+                console.error("Anonymous Sign-In Error:", error);
+            });
+        }
+        setLoading(false);
+    });
+    return () => unsubscribe();
+}, []);
+
+▶️ Step 5: Run the Application
+You're all set! Run the local development server from your terminal.
+
+npm run dev
+
+Your browser should open to http://localhost:5173 (or a similar address), where you will see the application running on your desktop, connected to your own Firebase backend.
+
+4. Technical Architecture & Tech Stack
 This project is built as a self-contained, single-file React application, architected to be robust, scalable, and performant.
 
 Frontend:
@@ -45,13 +122,7 @@ Backend & Database (Serverless):
 
 Firebase Authentication: Handles secure, session-based user authentication using an anonymous sign-in provider.
 
-Google Firestore: Employed as the real-time, NoSQL cloud database. Key architectural features include:
-
-Secure Multi-tenant Data: All user data is stored in separate, secure collections path-scoped by a unique userId (/artifacts/{appId}/users/{userId}/...).
-
-Real-time Listeners: onSnapshot is used to create real-time, bidirectional data flow between the client and the database.
-
-Efficient Batch Writes: The writeBatch operation is used to commit all enriched vulnerability documents to the database in a single, atomic operation, ensuring data integrity and performance.
+Google Firestore: Employed as the real-time, NoSQL cloud database.
 
 Third-Party Integrations:
 
@@ -59,9 +130,7 @@ NVD CVE API: To programmatically fetch and enrich vulnerability data.
 
 Generative AI API: For advanced data analysis, demonstrating the ability to integrate AI for practical problem-solving.
 
-4. Showcase of Skills
-This project is designed to demonstrate a wide range of technical and problem-solving abilities:
-
+5. Showcase of Skills
 Full-Stack Development: Expertise in building a complete application from the user interface down to the cloud database schema.
 
 Modern Frontend Frameworks: Deep proficiency in React and its ecosystem for creating sophisticated, stateful, and performant applications.
