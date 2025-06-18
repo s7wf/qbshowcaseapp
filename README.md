@@ -1,5 +1,3 @@
-Absolutely. Here is the complete README content, formatted in GitHub-compatible Markdown. You can copy and paste this directly into your `README.md` file on GitHub.
-
 ```markdown
 # SecurDash: Integrated Financial & Security Operations Dashboard
 
