@@ -1,0 +1,22 @@
+[
+  {
+    "cveId": "CVE-2021-44228",
+    "source": "Internal Network Scan"
+  },
+  {
+    "cveId": "CVE-2023-4966",
+    "source": "External Pentest"
+  },
+  {
+    "cveId": "CVE-2022-22965",
+    "source": "Dependency Checker"
+  },
+  {
+    "cveId": "CVE-2022-42889",
+    "source": "SAST Scan"
+  },
+  {
+    "cveId": "CVE-2023-24998",
+    "source": "Code Repository Scan"
+  }
+]
